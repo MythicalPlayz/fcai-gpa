@@ -1,0 +1,8 @@
+form input:checked+label {
+    color: aqua;
+    
+} 
+
+form[bylawver = true] {
+    color: white;
+}
