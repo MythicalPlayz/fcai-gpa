@@ -1,13 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // NOT in theme.extend
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {
-        darkMode: 'class', // or 'media'
-    },
+    extend: {},
   },
   plugins: [],
 }

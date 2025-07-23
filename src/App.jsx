@@ -4,6 +4,7 @@ import Header from './Components/Header/Header'
 import Bylaw from './Components/Bylaw/Bylaw'
 import TermsFrame from './Components/TermsFrame/TermsFrame'
 import { Toaster } from 'react-hot-toast'
+import DarkTheme from './Components/DarkTheme/DarkTheme'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Toaster />
+      <DarkTheme/>
       <Header />
       <Bylaw changeByLaw={changeByLaw} />
       <TermsFrame useNewBylaw={useNewBylaw} />

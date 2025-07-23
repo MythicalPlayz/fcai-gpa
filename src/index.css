@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -22,3 +23,7 @@
     background-color: #ffffff;
   }
 } */
+
+* {
+  transition: all 0.3s;
+}
