@@ -5,6 +5,7 @@ import Bylaw from './Components/Bylaw/Bylaw';
 import TermsFrame from './Components/TermsFrame/TermsFrame';
 import toast, { Toaster } from 'react-hot-toast';
 import DarkTheme from './Components/DarkTheme/DarkTheme';
+import InstallPWA from './Components/InstallPWA/InstallPWA';
 // import Login from './Components/Login/Login';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
     <>
       <Toaster />
       <DarkTheme />
+      <InstallPWA/>
       <Header />
       {/* <Login /> */}
       <Bylaw changeByLaw={changeByLaw} bylaw={useNewBylaw} />
