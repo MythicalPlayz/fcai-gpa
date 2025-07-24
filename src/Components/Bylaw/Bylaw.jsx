@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Bylaw({ changeByLaw, bylaw }) {
-  const [useNewBylaw, setUseNewBylaw] = useState(bylaw);
+  const [useNewBylaw, setUseNewBylaw] = useState(false); // Default to false (safe)
 
-  useEffect(() => {
-    changeByLaw(useNewBylaw);
-  }, [useNewBylaw]);
-
-  // Optional sync with parent prop (uncomment if needed)
+  // Sync with parent prop when it changes
   useEffect(() => {
     setUseNewBylaw(bylaw);
   }, [bylaw]);
+
+  // Notify parent when local state changes
+  useEffect(() => {
+    changeByLaw(useNewBylaw);
+  }, [useNewBylaw]);
 
   return (
     <>

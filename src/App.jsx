@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import Header from './Components/Header/Header'
-import Bylaw from './Components/Bylaw/Bylaw'
-import TermsFrame from './Components/TermsFrame/TermsFrame'
-import toast, { Toaster } from 'react-hot-toast'
-import DarkTheme from './Components/DarkTheme/DarkTheme'
-import Login from './Components/Login/Login'
-
+import { useEffect, useState, useRef } from 'react';
+import './App.css';
+import Header from './Components/Header/Header';
+import Bylaw from './Components/Bylaw/Bylaw';
+import TermsFrame from './Components/TermsFrame/TermsFrame';
+import toast, { Toaster } from 'react-hot-toast';
+import DarkTheme from './Components/DarkTheme/DarkTheme';
+// import Login from './Components/Login/Login';
 
 function App() {
   const [useNewBylaw, setUseNewBylaw] = useState(false);
   const [saved, setSaved] = useState([]);
-  let runned = false;
+  const hasRun = useRef(false); // 🧠 useRef to persist value across renders
 
   function loadSave() {
     try {
@@ -26,17 +25,16 @@ function App() {
   }
 
   useEffect(() => {
-    if (!runned)
+    if (!hasRun.current) {
       loadSave();
-    runned = true;
-  }, [])
-  
-  useEffect(() => {
-      if (saved?.useNewBylaw)
-        setUseNewBylaw(saved?.useNewBylaw);
-  }, [saved])
-  
+      hasRun.current = true;
+    }
+  }, []);
 
+  useEffect(() => {
+    if (saved?.useNewBylaw)
+      setUseNewBylaw(saved?.useNewBylaw);
+  }, [saved]);
 
   function changeByLaw(value) {
     setUseNewBylaw(value);
@@ -45,9 +43,9 @@ function App() {
   return (
     <>
       <Toaster />
-      <DarkTheme/>
+      <DarkTheme />
       <Header />
-      {/*<Login/>*/}
+      {/* <Login /> */}
       <Bylaw changeByLaw={changeByLaw} bylaw={useNewBylaw} />
       <TermsFrame useNewBylaw={useNewBylaw} saved={saved?.terms} />
     </>

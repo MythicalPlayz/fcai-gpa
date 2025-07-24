@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import style from './TermsFrame.module.css'
+import React, { useEffect, useState } from 'react';
+import style from './TermsFrame.module.css';
 import toast, { Toaster } from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinusCircle, faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Term from '../Term/Term';
 
 export default function TermsFrame({ useNewBylaw, saved }) {
@@ -16,7 +16,7 @@ export default function TermsFrame({ useNewBylaw, saved }) {
   }
 
   function decreaseTerms() {
-    if (terms == 1) {
+    if (terms === 1) {
       toast.error("Can not remove the last term");
       setTerms(1);
       return;
@@ -93,34 +93,47 @@ export default function TermsFrame({ useNewBylaw, saved }) {
   }
 
   useEffect(() => {
-    setTerms(saved?.length);
-
-  }, [saved])
-
-
-  return <>
-    <div className="flex justify-center items-center space-x-2 md:text-2xl lg:text-3xl my-10 dark:text-white">
-      <button onClick={decreaseTerms}><FontAwesomeIcon icon={faMinusCircle} /></button>
-      <h3>Number of Terms: {terms}</h3>
-      <button onClick={increaseTerms}><FontAwesomeIcon icon={faPlusCircle} /></button>
-    </div>
-    <div className='lg:w-3/4 mx-auto grid grid-cols-1 md:grid-cols-2 w-full space-x-2 space-y-4 p-2 my-10' id='terms'>
-      {[...Array(terms)].map((_, index) => (
-        <Term key={index} index={index} useNewBylaw={useNewBylaw} saved={(saved?.length > 0) ? saved[index] : []} />
-      ))}
-    </div>
-    {isNaN(finalGPA) ? <></> :
-
-      <div className='mx-auto text-3xl m-4 text-center dark:text-white flex flex-col space-y-4'>
-        <h4>Your Final GPA is <span className='font-bold'>{finalGPA}</span></h4>
-        <h4>Total hours are <span className='font-bold'>{finalTotalHours}</span></h4>
-        <h4>Final Result: <span className='font-bold'>{gpaToResult()}</span></h4>
-      </div>
+    if (Array.isArray(saved) && saved.length > 0) {
+      setTerms(saved.length);
+    } else {
+      setTerms(1);
     }
-    <button className='block mx-auto text-white bg-blue-500 p-2 w-full md:w-3/4 lg:w-1/2 rounded-3xl text-3xl' onClick={getGPA}> Get GPA </button>
-    <div className="my-4 flex justify-evenly items-center dark:text-white font-bold md:text-lg lg:text-2xl w-full">
-      <p>Copyright 2025</p>
-      <p>Made by MythicalPlayz</p>
-    </div>
-  </>
+  }, [saved]);
+
+  return (
+    <>
+      <div className="flex justify-center items-center space-x-2 md:text-2xl lg:text-3xl my-10 dark:text-white">
+        <button onClick={decreaseTerms}>
+          <FontAwesomeIcon icon={faMinusCircle} />
+        </button>
+        <h3>Number of Terms: {terms}</h3>
+        <button onClick={increaseTerms}>
+          <FontAwesomeIcon icon={faPlusCircle} />
+        </button>
+      </div>
+
+      <div className='lg:w-3/4 mx-auto grid grid-cols-1 md:grid-cols-2 w-full space-x-2 space-y-4 p-2 my-10' id='terms'>
+        {[...Array(terms)].map((_, index) => (
+          <Term key={index} index={index} useNewBylaw={useNewBylaw} saved={(saved?.length > 0) ? saved[index] : []} />
+        ))}
+      </div>
+
+      {!isNaN(finalGPA) && (
+        <div className='mx-auto text-3xl m-4 text-center dark:text-white flex flex-col space-y-4'>
+          <h4>Your Final GPA is <span className='font-bold'>{finalGPA}</span></h4>
+          <h4>Total hours are <span className='font-bold'>{finalTotalHours}</span></h4>
+          <h4>Final Result: <span className='font-bold'>{gpaToResult()}</span></h4>
+        </div>
+      )}
+
+      <button className='block mx-auto text-white bg-blue-500 p-2 w-full md:w-3/4 lg:w-1/2 rounded-3xl text-3xl' onClick={getGPA}>
+        Get GPA
+      </button>
+
+      <div className="my-4 flex justify-evenly items-center dark:text-white font-bold md:text-lg lg:text-2xl w-full">
+        <p>Copyright 2025</p>
+        <p>Made by MythicalPlayz</p>
+      </div>
+    </>
+  );
 }
