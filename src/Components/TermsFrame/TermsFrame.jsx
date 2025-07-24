@@ -109,7 +109,14 @@ export default function TermsFrame({ useNewBylaw, saved }) {
         <Term key={index} index={index} useNewBylaw={useNewBylaw} saved={(saved?.length > 0) ? saved[index] : []} />
       ))}
     </div>
-    {isNaN(finalGPA) ? <></> : <h4 className='mx-auto text-3xl m-4 text-center dark:text-white'>Your Final GPA is <span className='font-bold'>{finalGPA}</span>, Total hours are <span className='font-bold'>{finalTotalHours}</span>, Final Result: <span className='font-bold'>{gpaToResult()}</span></h4>}
+    {isNaN(finalGPA) ? <></> :
+
+      <div className='mx-auto text-3xl m-4 text-center dark:text-white flex flex-col space-y-4'>
+        <h4>Your Final GPA is <span className='font-bold'>{finalGPA}</span></h4>
+        <h4>Total hours are <span className='font-bold'>{finalTotalHours}</span></h4>
+        <h4>Final Result: <span className='font-bold'>{gpaToResult()}</span></h4>
+      </div>
+    }
     <button className='block mx-auto text-white bg-blue-500 p-2 w-full md:w-3/4 lg:w-1/2 rounded-3xl text-3xl' onClick={getGPA}> Get GPA </button>
     <div className="my-4 flex justify-evenly items-center dark:text-white font-bold md:text-lg lg:text-2xl w-full">
       <p>Copyright 2025</p>
