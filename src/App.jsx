@@ -5,6 +5,7 @@ import Bylaw from './Components/Bylaw/Bylaw'
 import TermsFrame from './Components/TermsFrame/TermsFrame'
 import toast, { Toaster } from 'react-hot-toast'
 import DarkTheme from './Components/DarkTheme/DarkTheme'
+import Login from './Components/Login/Login'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
       <Toaster />
       <DarkTheme/>
       <Header />
+      {/*<Login/>*/}
       <Bylaw changeByLaw={changeByLaw} bylaw={useNewBylaw} />
       <TermsFrame useNewBylaw={useNewBylaw} saved={saved?.terms} />
     </>

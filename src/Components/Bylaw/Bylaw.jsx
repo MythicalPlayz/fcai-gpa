@@ -38,7 +38,7 @@ export default function Bylaw({ changeByLaw, bylaw }) {
           />
           <label
             htmlFor="useoldbylaw"
-            className={`flex-1 text-center z-10 cursor-pointer py-2 ${
+            className={`flex-1 text-center z-[2] cursor-pointer py-2 ${
               !useNewBylaw ? 'text-white font-bold' : 'text-gray-300'
             }`}
           >
@@ -56,7 +56,7 @@ export default function Bylaw({ changeByLaw, bylaw }) {
           />
           <label
             htmlFor="usenewbylaw"
-            className={`flex-1 text-center z-10 cursor-pointer py-2 ${
+            className={`flex-1 text-center z-[2] cursor-pointer py-2 ${
               useNewBylaw ? 'text-white font-bold' : 'text-gray-300'
             }`}
           >
