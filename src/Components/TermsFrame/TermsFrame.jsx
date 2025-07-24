@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './TermsFrame.module.css'
 import toast, { Toaster } from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle, faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Term from '../Term/Term';
 
-export default function TermsFrame({ useNewBylaw }) {
-
+export default function TermsFrame({ useNewBylaw, saved }) {
   const [terms, setTerms] = useState(1);
   const [finalGPA, setFinalGPA] = useState(NaN);
   const [finalTotalHours, setFinalTotalHours] = useState(0);
-  const [finalResult, setFinalResult] = useState("");
 
   function increaseTerms() {
     setTerms(terms + 1);
@@ -27,7 +25,7 @@ export default function TermsFrame({ useNewBylaw }) {
     toast.success(`Decreased the term count to ${terms - 1}`);
   }
 
-  function gpaToResult(){
+  function gpaToResult() {
     switch (true) {
       case (finalGPA >= 3.5):
         return "Excellent";
@@ -39,7 +37,6 @@ export default function TermsFrame({ useNewBylaw }) {
         return "Acceptable";
       case (finalGPA >= 1):
         return "Weak";
-    
       default:
         return "Very Weak";
     }
@@ -47,36 +44,58 @@ export default function TermsFrame({ useNewBylaw }) {
 
   function getGPA() {
     try {
+      let finalSave = {
+        'useNewBylaw': useNewBylaw,
+        'terms': [],
+      };
+      let tempSave = [];
       let totalhours = 0;
       let totalGPA = 0;
       let warned = false;
-      let forms = document.querySelectorAll('#terms form');
-      for (let form of forms) {
-        let subjectHour = Number(form.hour.value);
-        let subjectGPA = Number(form.value.value);
 
-        if (subjectGPA === -1 && !warned) {
-          warned = true;
-          toast('⚠️ Some courses do not have results');
-          continue;
+      const termsElements = document.querySelectorAll('.term');
+
+      for (let term of termsElements) {
+        let subtemp = [];
+        let forms = term.querySelectorAll('form');
+        for (let form of forms) {
+          let courseName = form.name.value;
+          let courseHour = Number(form.hour.value);
+          let courseGPA = Number(form.value.value);
+
+          subtemp.push({
+            name: courseName,
+            hour: courseHour,
+            gpa: courseGPA,
+          });
+
+          if (courseGPA === -1 && !warned) {
+            warned = true;
+            toast('⚠️ Some courses do not have results');
+            continue;
+          }
+
+          totalhours += courseHour;
+          totalGPA += courseGPA * courseHour;
         }
-
-        totalhours += subjectHour;
-        totalGPA += (subjectGPA * subjectHour);
-        
+        tempSave.push(subtemp);
       }
 
-      if (totalhours == 0) throw error;
-      
-
+      if (totalhours === 0) throw new Error('Zero hours');
+      finalSave['terms'] = tempSave;
+      localStorage.setItem('savedCourses', JSON.stringify(finalSave));
       setFinalGPA(Number(totalGPA / totalhours).toFixed(2));
       setFinalTotalHours(totalhours);
-      toast.success("GPA calcuated succesfully");
-    }
-    catch (e) {
-      toast.error("Could not calculate GPA");
+      toast.success('GPA calculated successfully');
+    } catch (e) {
+      toast.error('Could not calculate GPA');
     }
   }
+
+  useEffect(() => {
+    setTerms(saved?.length);
+
+  }, [saved])
 
 
   return <>
@@ -87,7 +106,7 @@ export default function TermsFrame({ useNewBylaw }) {
     </div>
     <div className='lg:w-3/4 mx-auto grid grid-cols-1 md:grid-cols-2 w-full space-x-2 space-y-4 p-2 my-10' id='terms'>
       {[...Array(terms)].map((_, index) => (
-        <Term key={index} index={index} useNewBylaw={useNewBylaw} />
+        <Term key={index} index={index} useNewBylaw={useNewBylaw} saved={(saved?.length > 0) ? saved[index] : []} />
       ))}
     </div>
     {isNaN(finalGPA) ? <></> : <h4 className='mx-auto text-3xl m-4 text-center dark:text-white'>Your Final GPA is <span className='font-bold'>{finalGPA}</span>, Total hours are <span className='font-bold'>{finalTotalHours}</span>, Final Result: <span className='font-bold'>{gpaToResult()}</span></h4>}
