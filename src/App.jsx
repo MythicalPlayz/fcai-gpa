@@ -10,6 +10,7 @@ import InstallPWA from './Components/InstallPWA/InstallPWA';
 
 function App() {
   const [useNewBylaw, setUseNewBylaw] = useState(false);
+  const [oldGPA, setOldGPA] = useState({'used': false})
   const [saved, setSaved] = useState([]);
   const hasRun = useRef(false); // 🧠 useRef to persist value across renders
 
@@ -35,6 +36,8 @@ function App() {
   useEffect(() => {
     if (saved?.useNewBylaw)
       setUseNewBylaw(saved?.useNewBylaw);
+    if (saved?.oldGPA)
+      setOldGPA(saved?.oldGPA);
   }, [saved]);
 
   function changeByLaw(value) {
@@ -49,7 +52,7 @@ function App() {
       <Header />
       {/* <Login /> */}
       <Bylaw changeByLaw={changeByLaw} bylaw={useNewBylaw} />
-      <TermsFrame useNewBylaw={useNewBylaw} saved={saved?.terms} />
+      <TermsFrame useNewBylaw={useNewBylaw} saved={saved?.terms} oldGPA={oldGPA} />
     </>
   );
 }
