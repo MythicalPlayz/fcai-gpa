@@ -150,10 +150,6 @@ export default function TermsFrame({ useNewBylaw, saved, oldGPA }) {
 
     if (oldGPA?.used) {
       setUseOldGPA(true);
-      const oldGPAElement = document.getElementById('oldGPA');
-      const oldHoursElement = document.getElementById('oldHours');
-      console.log(oldGPAElement);
-      
     }
 
   },[oldGPA]);
